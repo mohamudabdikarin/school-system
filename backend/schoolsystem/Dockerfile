@@ -23,6 +23,9 @@ WORKDIR /app
 # Create non-root user for security
 RUN groupadd -r spring && useradd -r -g spring spring
 
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Copy the built jar from build stage
 COPY --from=build /app/target/schoolsystem-*.jar app.jar
 
