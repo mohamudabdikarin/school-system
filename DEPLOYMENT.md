@@ -15,16 +15,16 @@
 5. Copy the connection string from "Connection string" → "URI"
    - Format: `postgresql://postgres:[YOUR-PASSWORD]@[HOST]:[PORT]/postgres`
 
-## Step 2: Deploy Spring Boot Backend on Render
+## Step 2: Deploy Spring Boot Backend on Render (Docker)
 
 1. Go to Render.com and create a new Web Service
 2. Connect your GitHub repository
 3. Configure the service:
    - **Name**: school-management-backend
-   - **Root Directory**: `backend/schoolsystem`
-   - **Environment**: Java
-   - **Build Command**: `mvn clean package -DskipTests`
-   - **Start Command**: `java -Dspring.profiles.active=prod -jar target/schoolsystem-0.0.1-SNAPSHOT.jar`
+   - **Environment**: Docker
+   - **Dockerfile Path**: `./backend/schoolsystem/Dockerfile`
+   - **Docker Context**: `./backend/schoolsystem`
+   - **Auto-Deploy**: Yes (deploys on git push)
 4. Set the following environment variables:
    ```
    DATABASE_URL=<your-supabase-connection-string>
@@ -33,6 +33,12 @@
    SPRING_PROFILES_ACTIVE=prod
    ```
 5. Deploy the service
+
+**Alternative: Manual Configuration**
+If the render.yaml file doesn't work, configure manually:
+- Root Directory: Leave empty (use repository root)
+- Build Command: Leave empty (Docker handles this)
+- Start Command: Leave empty (Docker handles this)
 
 ## Step 3: Deploy React Frontend on Vercel
 
@@ -85,3 +91,28 @@ The application is configured with `spring.jpa.hibernate.ddl-auto=update` in pro
 3. **API calls failing**: Verify `VITE_API_BASE_URL` points to correct Render backend URL
 4. **Build failures**: Check logs in respective platforms (Render/Vercel)
 5. **Cold starts**: Render free tier has cold starts - first request may be slow
+6. **Docker build issues**: Check Dockerfile syntax and build logs in Render dashboard
+
+## Local Development with Docker
+
+You can run the entire stack locally using Docker:
+
+```bash
+# Start all services (database, backend, frontend)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Rebuild and start
+docker-compose up --build
+```
+
+**Local URLs:**
+- Frontend: http://localhost:5173
+- Backend: http://localhost:2020
+- API Docs: http://localhost:2020/swagger-ui.html
+- Database: localhost:5432
