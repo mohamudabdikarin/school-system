@@ -1,30 +1,38 @@
 # School Management System - Deployment Guide
 
 ## Prerequisites
-- Railway account (https://railway.app)
-- Vercel account (https://vercel.com)
+- Render account (https://render.com) - Free tier available
+- Supabase account (https://supabase.com) - Free tier available  
+- Vercel account (https://vercel.com) - Free tier available
 - Git repository (GitHub, GitLab, or Bitbucket)
 
-## Step 1: Deploy PostgreSQL Database on Railway
+## Step 1: Deploy PostgreSQL Database on Supabase
 
-1. Go to Railway.app and create a new project
-2. Click "Add Service" → "Database" → "PostgreSQL"
-3. Note down the database connection details from the "Variables" tab:
-   - `DATABASE_URL` (complete connection string)
+1. Go to Supabase.com and create a new project
+2. Choose a project name and database password
+3. Wait for the project to be created (2-3 minutes)
+4. Go to Settings → Database
+5. Copy the connection string from "Connection string" → "URI"
+   - Format: `postgresql://postgres:[YOUR-PASSWORD]@[HOST]:[PORT]/postgres`
 
-## Step 2: Deploy Spring Boot Backend on Railway
+## Step 2: Deploy Spring Boot Backend on Render
 
-1. In the same Railway project, click "Add Service" → "GitHub Repo"
-2. Connect your repository and select the backend folder
-3. Set the following environment variables in Railway:
+1. Go to Render.com and create a new Web Service
+2. Connect your GitHub repository
+3. Configure the service:
+   - **Name**: school-management-backend
+   - **Root Directory**: `backend/schoolsystem`
+   - **Environment**: Java
+   - **Build Command**: `mvn clean package -DskipTests`
+   - **Start Command**: `java -Dspring.profiles.active=prod -jar target/schoolsystem-0.0.1-SNAPSHOT.jar`
+4. Set the following environment variables:
    ```
-   DATABASE_URL=<your-postgresql-connection-string>
+   DATABASE_URL=<your-supabase-connection-string>
    JWT_SECRET=AmalSECRETJwtKeyCodeForSchoolManagement-System-Production-2025
-   CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app,http://localhost:3000
+   CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
    SPRING_PROFILES_ACTIVE=prod
    ```
-4. Set the root directory to `backend/schoolsystem`
-5. Railway will automatically detect the Java application and deploy it
+5. Deploy the service
 
 ## Step 3: Deploy React Frontend on Vercel
 
@@ -33,14 +41,14 @@
 3. Set the root directory to `frontend`
 4. Set the following environment variables:
    ```
-   VITE_API_BASE_URL=https://your-backend-url.railway.app/api/v1
+   VITE_API_BASE_URL=https://your-backend-url.onrender.com/api/v1
    ```
 5. Deploy the project
 
 ## Step 4: Update CORS Configuration
 
 After getting your Vercel domain:
-1. Go back to Railway backend service
+1. Go back to Render backend service
 2. Update the `CORS_ALLOWED_ORIGINS` environment variable:
    ```
    CORS_ALLOWED_ORIGINS=https://your-actual-frontend-domain.vercel.app
@@ -49,7 +57,7 @@ After getting your Vercel domain:
 
 ## Step 5: Update Frontend API URL
 
-1. Update the `.env.production` file in the frontend with your actual Railway backend URL
+1. Update the `.env.production` file in the frontend with your actual Render backend URL
 2. Redeploy the frontend on Vercel
 
 ## Database Migration
@@ -58,20 +66,22 @@ The application is configured with `spring.jpa.hibernate.ddl-auto=update` in pro
 
 ## Monitoring and Logs
 
-- **Backend logs**: Available in Railway dashboard
-- **Frontend logs**: Available in Vercel dashboard
-- **Health check**: `https://your-backend-url.railway.app/actuator/health`
+- **Backend logs**: Available in Render dashboard
+- **Frontend logs**: Available in Vercel dashboard  
+- **Database**: Monitor in Supabase dashboard
+- **Health check**: `https://your-backend-url.onrender.com/actuator/health`
 
 ## Security Notes
 
 - JWT secret is configured via environment variable
 - CORS is properly configured for your frontend domain
-- Database credentials are managed by Railway
+- Database credentials are managed by Supabase
 - All connections use HTTPS in production
 
 ## Troubleshooting
 
 1. **CORS errors**: Ensure `CORS_ALLOWED_ORIGINS` includes your exact Vercel domain
-2. **Database connection**: Check `DATABASE_URL` format and Railway PostgreSQL status
-3. **API calls failing**: Verify `VITE_API_BASE_URL` points to correct Railway backend URL
-4. **Build failures**: Check logs in respective platforms (Railway/Vercel)
+2. **Database connection**: Check `DATABASE_URL` format and Supabase project status
+3. **API calls failing**: Verify `VITE_API_BASE_URL` points to correct Render backend URL
+4. **Build failures**: Check logs in respective platforms (Render/Vercel)
+5. **Cold starts**: Render free tier has cold starts - first request may be slow

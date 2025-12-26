@@ -6,9 +6,9 @@ A comprehensive school management system built with Spring Boot (backend) and Re
 
 - **Backend**: Spring Boot 4.0.1 with PostgreSQL
 - **Frontend**: React 18 with Vite and Tailwind CSS
-- **Database**: PostgreSQL
+- **Database**: PostgreSQL (Supabase)
 - **Authentication**: JWT-based authentication
-- **Deployment**: Railway (backend + database) + Vercel (frontend)
+- **Deployment**: Render (backend) + Supabase (database) + Vercel (frontend)
 
 ## 🚀 Features
 
@@ -49,7 +49,7 @@ school-management-system/
 │   └── schoolsystem/          # Spring Boot application
 │       ├── src/
 │       ├── pom.xml
-│       └── railway.json       # Railway deployment config
+│       └── render.yaml        # Render deployment config
 ├── frontend/                  # React application
 │   ├── src/
 │   ├── package.json
@@ -96,8 +96,9 @@ school-management-system/
 ## 🌐 Deployment
 
 This application is configured for deployment on:
-- **Railway**: Backend + PostgreSQL database
-- **Vercel**: Frontend
+- **Render**: Backend Spring Boot application
+- **Supabase**: PostgreSQL database
+- **Vercel**: Frontend React application
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
@@ -111,14 +112,14 @@ chmod +x deploy.sh
 
 ### Environment Variables
 
-**Backend (Railway)**
-- `DATABASE_URL`: PostgreSQL connection string
+**Backend (Render)**
+- `DATABASE_URL`: Supabase PostgreSQL connection string
 - `JWT_SECRET`: JWT signing secret
 - `CORS_ALLOWED_ORIGINS`: Allowed frontend origins
 - `SPRING_PROFILES_ACTIVE`: Set to `prod` for production
 
 **Frontend (Vercel)**
-- `VITE_API_BASE_URL`: Backend API URL
+- `VITE_API_BASE_URL`: Render backend API URL
 
 ## 📚 API Documentation
 

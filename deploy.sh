@@ -39,18 +39,20 @@ echo ""
 echo "📋 Deployment Checklist:"
 echo "========================"
 echo ""
-echo "1. 🗄️  Database (Railway PostgreSQL)"
-echo "   - Create Railway account at https://railway.app"
+echo "1. 🗄️  Database (Supabase PostgreSQL)"
+echo "   - Create Supabase account at https://supabase.com"
 echo "   - Create new project"
-echo "   - Add PostgreSQL service"
-echo "   - Copy DATABASE_URL from Variables tab"
+echo "   - Copy DATABASE_URL from Settings → Database"
 echo ""
 
-echo "2. 🖥️  Backend (Railway)"
-echo "   - In same Railway project, add GitHub repo service"
+echo "2. 🖥️  Backend (Render)"
+echo "   - Create Render account at https://render.com"
+echo "   - Create new Web Service from GitHub repo"
 echo "   - Set root directory: backend/schoolsystem"
+echo "   - Build command: mvn clean package -DskipTests"
+echo "   - Start command: java -Dspring.profiles.active=prod -jar target/schoolsystem-0.0.1-SNAPSHOT.jar"
 echo "   - Add environment variables:"
-echo "     * DATABASE_URL=<your-postgresql-url>"
+echo "     * DATABASE_URL=<your-supabase-connection-string>"
 echo "     * JWT_SECRET=AmalSECRETJwtKeyCodeForSchoolManagement-System-Production-2025"
 echo "     * CORS_ALLOWED_ORIGINS=https://your-frontend.vercel.app"
 echo "     * SPRING_PROFILES_ACTIVE=prod"
@@ -61,12 +63,12 @@ echo "   - Create Vercel account at https://vercel.com"
 echo "   - Import Git repository"
 echo "   - Set root directory: frontend"
 echo "   - Add environment variable:"
-echo "     * VITE_API_BASE_URL=https://your-backend.railway.app/api/v1"
+echo "     * VITE_API_BASE_URL=https://your-backend.onrender.com/api/v1"
 echo ""
 
 echo "4. 🔧 Final Configuration"
 echo "   - Update CORS_ALLOWED_ORIGINS with actual Vercel domain"
-echo "   - Update .env.production with actual Railway backend URL"
+echo "   - Update .env.production with actual Render backend URL"
 echo "   - Test the deployment"
 echo ""
 
@@ -82,7 +84,7 @@ read -p "Do you want to commit and push these changes to git? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     git add .
-    git commit -m "Add production deployment configuration"
+    git commit -m "Add production deployment configuration for Render + Supabase"
     
     # Check if remote exists
     if git remote get-url origin >/dev/null 2>&1; then
