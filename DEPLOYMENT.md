@@ -22,8 +22,8 @@
 3. Configure the service:
    - **Name**: school-management-backend
    - **Environment**: Docker
-   - **Dockerfile Path**: `./backend/schoolsystem/Dockerfile`
-   - **Docker Context**: `./backend/schoolsystem`
+   - **Dockerfile Path**: `./backend/Dockerfile`
+   - **Docker Context**: `./backend`
    - **Auto-Deploy**: Yes (deploys on git push)
 4. Set the following environment variables:
    ```

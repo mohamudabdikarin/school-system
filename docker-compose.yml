@@ -22,7 +22,7 @@ services:
   # Spring Boot Backend
   backend:
     build:
-      context: ./backend/schoolsystem
+      context: ./backend
       dockerfile: Dockerfile
     container_name: school-backend
     environment:

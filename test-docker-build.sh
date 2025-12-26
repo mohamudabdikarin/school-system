@@ -33,7 +33,7 @@ echo ""
 
 # Build the Docker image
 echo "Building Docker image..."
-cd backend/schoolsystem
+cd backend
 
 if docker build -t school-management-backend .; then
     print_status "Docker image built successfully!"
@@ -52,7 +52,7 @@ else
     exit 1
 fi
 
-cd ../..
+cd ..
 
 echo ""
 print_status "Build test complete!"
