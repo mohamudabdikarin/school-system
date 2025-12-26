@@ -38,8 +38,12 @@ cd backend/schoolsystem
 if docker build -t school-management-backend .; then
     print_status "Docker image built successfully!"
     echo ""
-    echo "🚀 You can now run the container with:"
-    echo "docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod school-management-backend"
+    echo "🚀 You can now test the container with:"
+    echo "docker run -p 8080:8080 \\"
+    echo "  -e SPRING_PROFILES_ACTIVE=prod \\"
+    echo "  -e DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/school_db \\"
+    echo "  -e JWT_SECRET=test-secret \\"
+    echo "  school-management-backend"
     echo ""
     echo "📋 Image details:"
     docker images school-management-backend

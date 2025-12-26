@@ -1,4 +1,4 @@
-package com.example.schoolsystem.config;
+package com.fullstack.schoolmanagement.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
